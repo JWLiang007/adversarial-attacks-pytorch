@@ -1,10 +1,11 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from ..attack import Attack
 
 
-class PGD(Attack):
+class PGD_FEAT(Attack):
     r"""
     PGD in the paper 'Towards Deep Learning Models Resistant to Adversarial Attacks'
     [https://arxiv.org/abs/1706.06083]
@@ -59,13 +60,11 @@ class PGD(Attack):
 
         for _ in range(self.steps):
             adv_images.requires_grad = True
-            outputs = self.get_logits(adv_images)
+            # outputs = self.get_logits(adv_images)
+            ori_feats, adv_feats = self.get_feats(images, adv_images)
 
             # Calculate loss
-            if self.targeted:
-                cost = -loss(outputs, target_labels)
-            else:
-                cost = loss(outputs, labels)
+            cost = F.mse_loss(ori_feats, adv_feats )  
             print('iter: ',_, ' loss: ', cost.item())
             # Update adversarial images
             grad = torch.autograd.grad(cost, adv_images,
@@ -77,3 +76,9 @@ class PGD(Attack):
             adv_images = torch.clamp(images + delta, min=0, max=1).detach()
 
         return adv_images
+    
+    def get_feats(self,ori_images,adv_images):
+        input_images = torch.cat([ori_images, adv_images])
+        self.model(input_images)
+        ori_feats, adv_feats = torch.chunk(self.model.fc_features, 2 , dim=0)
+        return ori_feats, adv_feats

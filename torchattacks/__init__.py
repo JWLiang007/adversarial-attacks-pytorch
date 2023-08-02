@@ -7,6 +7,7 @@ from .attacks.fgsm import FGSM
 from .attacks.bim import BIM
 from .attacks.rfgsm import RFGSM
 from .attacks.pgd import PGD
+from .attacks.pgd_feat import PGD_FEAT
 from .attacks.eotpgd import EOTPGD
 from .attacks.ffgsm import FFGSM
 from .attacks.tpgd import TPGD
@@ -55,7 +56,7 @@ __version__ = '3.4.1'
 __all__ = [
     "VANILA", "GN",
 
-    "FGSM", "BIM", "RFGSM", "PGD", "EOTPGD", "FFGSM",
+    "FGSM", "BIM", "RFGSM", "PGD", "PGD_FEAT","EOTPGD", "FFGSM",
     "TPGD", "MIFGSM", "UPGD", "APGD", "APGDT", "DIFGSM",
     "TIFGSM", "Jitter", "NIFGSM", "PGDRS", "SINIFGSM",
     "VMIFGSM", "VNIFGSM", "SPSA", "JSMA", "EADL1", "EADEN", "PIFGSM", "PIFGSMPLUSPLUS",
