@@ -466,7 +466,7 @@ class Attack(object):
         if self.device:
             given_training = self.model.training
             self._change_model_mode(given_training)
-            images = self._check_inputs(images)
+            # images = self._check_inputs(images)
             adv_images = self.forward(images, labels, *args, **kwargs)
             adv_images = self._check_outputs(adv_images)
             self._recover_model_mode(given_training)
